@@ -1,33 +1,39 @@
 <!DOCTYPE html>
+<html lang="en">
 
-<html>
-    <head>
-        <title>Anões</title>
-        <link rel="icon" href="icone.ico">
-        <link rel="stylesheet" href="estilo.css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grota Funda</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
 
-    <body>
-        <div id="header">
-            <h1>Anões.</h1>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="sao.html">O que são?</a></li>
-                <li><a href="comem.html">O que Comem?</a></li>
-                <li><a href="vivem.html">Onde Vivem?</a></li>
-            </ul>
-        </div>
+<body>
+    <div class="container">
+        <form action="" id="contactForm">
+            <div class="alert"></div>
 
-        <div id="conteudo">
-            <p>Página sobre anões.</p>
-            <p>Clique nas opções na barra incial para saber mais.</p>
-            <img src="home.jpg" style="width:300px">
-            <p>Espero que goste.</p>
-        </div>
-    </body>
+            <div class="inputBox">
+                <input type="text" id="name" placeholder="Seu nome...." />
+            </div>
 
-    <div id="footer">
-        <p>Feito por Mikael Müller</p>
-        <p>Enviar reclamações para mullermikael.mm@gmail.com</p>
+            <div class="inputBox">
+                <input type="email" id="emailid" placeholder="Seu email....." />
+            </div>
+
+            <div class="inputBox">
+                <textarea id="msgContent" cols="30" rows="10" placeholder="Mensagem"></textarea>
+            </div>
+
+            <div class="inputBox">
+                <button type="submit">Enviar</button>
+            </div>
+        </form>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+    <script src="./db.js"></script>
+</body>
+
 </html>
