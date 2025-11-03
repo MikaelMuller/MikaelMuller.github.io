@@ -178,6 +178,7 @@ textarea {
   width: 99%;
   margin: 0 auto;
   }
+  #conteudo {margin-left: 0.5%; margin-right: 0.5%;}
 }
 
 @media screen and (min-width: 1000px) {
@@ -195,4 +196,5 @@ textarea {
   margin-left: 42%;
   margin-right: 42%;
 }
+
 }
