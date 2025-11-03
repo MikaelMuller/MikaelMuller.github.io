@@ -1,38 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grota Funda</title>
-    <link rel="stylesheet" href="./styles.css">
+    <title>Grota Funda - Visitação</title>
+    <link rel="icon" href="icone.png" sizes="192x192">
+    <link rel="stylesheet" href="index.css">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
 </head>
 
 <body>
-    <div class="container">
-        <form action="" id="contactForm">
-            <div class="alert"></div>
+    <div id="cabecalho">
+        <img src="visitacao.png" id="logo">
 
-            <div class="inputBox">
-                <input type="text" id="name" placeholder="Seu nome...." />
-            </div>
+        <ul class="topnav">
+            <li><a class="ativo" href="">Agenda</a></li>
+            <li><a href="https://www.atibaia.sp.gov.br/grotafunda">Sobre o Parque</a></li>
+            <!--<li><a href="">Guias Particulares</a></li>-->
+            <li class="direita"><a href="#rodape">Contato</a></li>
+        </ul>
+    </div>
+    <!--
+    <p id="nomeTexto">Nome: *</p><input type="text" id="nome" placeholder="Seu nome..." /><p id="idadeTexto">Idade: *</p><input type="number" id="idade" placeholder="Sua idade..." /><p id="idadeTexto">Telefone para contato: *</p><input type="number" id="telefone" placeholder="Número de telefone..." /><p id="emailTexto">E-mail para contato: *</p><input type="email" id="enderecoEmail" placeholder="Seu email..." /><p id="emergenciaTexto">Nome e telefone para caso de emergências:</p><textarea id="emergencia" cols="30" rows="5" placeholder="Contato de emergência..."></textarea><p id="alergiasTexto">Possui alergias, necessidades especiais ou restrições?</p><textarea id="alergias" cols="30" rows="5" placeholder="Alergias, necessidades especiais ou restrições..."></textarea><br><br><input type="checkbox" id="riscos" name="riscos" value="riscos"><label for="riscos">* DECLARO que conheço e assumo os riscos inerentes à atividade de visitação em áreas naturais abertas no interior do Parque Natural Municipal Grota Funda (PNMGF) e que me responsabilizo pelos meus acompanhantes nos passeios e trilhas, isentando a PNMGF e a Prefeitura da estância de Atibaia de qualquer responsabilidade em caso de problemas de saúde, mal súbito ou acidentes pessoais eventualmente ocorridos comigo ou com meus acompanhantes. DECLARO ESTAR CIENTE DE QUE: As áreas naturais do PNMGF apresentam riscos tais como: relevo acidentado, quedas, picadas de insetos e carrapatos, animais peçonhentos, rajadas de vento, quedas de árvores e rochas, deslizamentos de terra, raios, desmoronamentos, entre outros, sendo o visitante o maior responsável pela própria segurança. DECLARO AINDA ESTAR CIENTE DE QUE: Poderei ser responsabilizado por quaisquer danos causados por mim, ou pelos visitantes que estão sob meu acompanhamento, nos patrimônios (ambientais ou históricos) existentes no PNMGF.</label><br><input type="checkbox" id="lgpd" name="lgpd" value="lgpd"><label for="lgpd">* Aviso de Privacidade (LGPD): As informações coletadas neste formulário serão utilizadas exclusivamente para fins de inscrição, organização e comunicação das atividades do Parque Natural Municipal da Grota Funda. Os dados não serão compartilhados com terceiros e serão armazenados de forma segura, conforme a Lei Geral de Proteção de Dados (Lei nº 13.709/2018). Você autoriza o uso dos seus dados pessoais conforme descrito acima e de acordo com a LGPD?</label><br><br><button onclick="enviarRegistro('+"'"+eventId+"'"+')">Enviar</button>
+    -->
+    <br>
 
-            <div class="inputBox">
-                <input type="email" id="emailid" placeholder="Seu email....." />
-            </div>
+    
+    <div id="conteudo">
+        <div id='calendar'>
+            <img src="carregando.gif" id="carregandoGIF" style="width: 20%">
+        </div>
+    </div>
+        
+    <br>
+    <div id="formularioDiv">
+        <p id="eventoTexto"></p>
+        <p id="vagasTexto"></p>
+        <div id="eventoDiv"></div>
+        <p id ="avisoTexto"></p>
+    </div>
 
-            <div class="inputBox">
-                <textarea id="msgContent" cols="30" rows="10" placeholder="Mensagem"></textarea>
-            </div>
-
-            <div class="inputBox">
-                <button type="submit">Enviar</button>
-            </div>
-        </form>
+    <div id="rodape">
+        <h1 id="contato">Contato:</h1>
+        <p id="contatoWhatsapp">Whatsapp: 11 92134-2391</p>
+        <a id="contatoEmail" href="mailto:parquegrotafunda@atibaia.sp.gov.br">parquegrotafunda@atibaia.sp.gov.br</a>
+        <a href="https://simbiose.org.br/"><img src="Logo_Simbiose_Negativo.png" id="logoSimbiose"></a>
+        <a href=""><p id="admTexto">Portal do administrador</p></a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="./db.js"></script>
 </body>
 

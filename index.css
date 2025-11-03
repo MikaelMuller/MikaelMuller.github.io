@@ -1,0 +1,198 @@
+body{
+  background-color: black;
+}
+
+p{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: white;
+}
+
+#logo {
+  padding-top: 7%;
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+  padding-bottom: 3%;
+  width: 90%;
+  margin: 0 auto;
+}
+
+li{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+li a{
+  color: #fbc32b;
+}
+ 
+ul.topnav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+ul.topnav li {float: left;}
+
+ul.topnav li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+ul.topnav li a:hover:not(.ativo) {background-color: #111;}
+
+ul.topnav li a.ativo {background-color: #0093d5;}
+
+ul.topnav li.direita {float: right;}
+
+#conteudo{
+  background-color: white;
+  padding: 2%;
+  border-radius: 5%;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+
+#calendar{
+  border-radius: 5%;
+  margin: 0 auto;
+  height: auto;
+}
+
+.fc-scroller {
+  overflow: auto !important;
+}
+
+.fc-event {
+  cursor: pointer;
+}
+
+.fc-toolbar {
+  text-transform: capitalize;
+  font-family: Verdana, Geneva, Tahoma, sans-serif
+}
+
+#nome{
+  display: block;
+}
+
+#enderecoEmail{
+  display: block;
+}
+
+#mensagem{
+  display: block;
+}
+
+textarea {
+  resize: none;
+}
+
+.fc-event-title {
+  white-space: normal;
+}
+
+#formularioDiv{
+  background-color: #333;
+  padding-right: 2%;
+  padding-left: 2%;
+  margin-bottom: 25px;
+  border-radius: 2%;
+}
+
+#vagas{
+  color: #FFC32A;
+}
+
+#formularioTexto{
+  color: white;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center;
+}
+
+#riscosTexto, #lgpdTexto{
+  color: white;
+  font-size: small;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#botao {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 14px 24px;
+  border: none;
+  transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s, -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
+  background:#0093d5;
+  color:white
+}
+
+#rodape{
+  background-color: #333;
+  padding: 1%;
+  border-radius: 1.5%;
+  text-align: center;
+}
+
+#contato{
+  color: white;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#contatoEmail{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #0093d5;
+}
+
+#logoSimbiose{
+  width: 30%;
+  margin-left: 35%;
+  margin-right: 35%;
+}
+
+#admTexto{
+  text-align: right;
+  margin: 0;
+}
+
+@media screen and (max-width: 600px) {
+  ul.topnav li.direita, 
+  ul.topnav li {float: none;}
+  #logoSimbiose{
+  width: 40%;
+  margin-left: 30%;
+  margin-right: 30%;
+  }
+  #logo {
+  padding-top: 3%;
+  padding-left: 0.5%;
+  padding-right: 0.5%;
+  padding-bottom: 1%;
+  width: 99%;
+  margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  #conteudo {margin-left: 20%; margin-right: 20%;}
+  #logo {
+  padding-top: 7%;
+  padding-left: 20%;
+  padding-right: 20%;
+  padding-bottom: 3%;
+  width: 60%;
+  margin: 0 auto;
+  }
+  #logoSimbiose{
+  width: 16%;
+  margin-left: 42%;
+  margin-right: 42%;
+}
+}
