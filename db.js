@@ -68,7 +68,12 @@ DB.ref("eventos").once("value").then(function(snapshot) {
 
     if(data.formulario){
       if(Date.parse(data.dia) > new Date()){
-        var vagasLivres = data.limite - Object.keys(data.participantes).length;
+        if(data.participantes != undefined){
+          var vagasLivres = data.limite - Object.keys(data.participantes).length;
+        }else{
+          var vagasLivres = data.limite;
+        }
+        
         meusEventos = meusEventos + '{"start": "' + data.dia + '", "title": "'+ data.nome + '", "id": "' + data.id + '", "backgroundColor": "'+data.cor+'", "extendedProps": {"texto": "'+ data.texto + '", "vagas": "'+vagasLivres+'", "passou": false, "formulario": true}},'
       } else{
         meusEventos = meusEventos + '{"start": "' + data.dia + '", "title": "'+ data.nome + '", "id": "' + data.id + '", "backgroundColor": "gray","extendedProps": {"texto": "'+ data.texto + '", "vagas": "0", "passou": true, "formulario": true}},'
@@ -147,4 +152,5 @@ function gerarFormulario(eventId, texto, vagas, passou, formulario){
 function vagasEsgotadas(){
   document.getElementById("vagasTexto").innerHTML = '<p id="vagas">VAGAS ESGOTADAS</p>';
   document.getElementById("eventoDiv").innerHTML = '';
+
 }
