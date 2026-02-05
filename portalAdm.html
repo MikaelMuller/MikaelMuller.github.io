@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Painel Administrativo</title>
+  <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-database-compat.js"></script>
+
+<style>
+  :root{
+    --primary:#3b82f6;
+    --primary-dark:#2563eb;
+    --danger:#ef4444;
+    --danger-dark:#dc2626;
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --border:#e5e7eb;
+    --text:#1f2937;
+    --muted:#6b7280;
+  }
+
+  body {
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    margin: 0;
+    color: var(--text);
+  }
+
+  header {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+  }
+
+  header h2 {
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: var(--text);
+  }
+
+  #container {
+    max-width: 1000px;
+    margin: 28px auto;
+    padding: 0 20px 40px;
+  }
+
+  h3 {
+    margin-top: 0;
+    font-weight: 600;
+  }
+
+  button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 5px 5px 10px 0;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.15s ease, transform 0.08s ease;
+  }
+
+  button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+  }
+
+  button:active {
+    transform: translateY(0);
+  }
+
+  #limpaArquivo {
+    background: var(--danger);
+  }
+
+  #limpaArquivo:hover {
+    background: var(--danger-dark);
+  }
+
+  a button {
+    margin: 20px;
+  }
+
+  .evento {
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    padding: 18px;
+    margin-bottom: 16px;
+    transition: box-shadow 0.15s ease;
+  }
+
+  .evento:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+
+  .evento h4 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .evento p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  .participante {
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    margin: 8px 0;
+    font-size: 14px;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin: 8px 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    box-sizing: border-box;
+    background: white;
+  }
+
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(59,130,246,0.12);
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  #login-area,
+  #admin-area,
+  #form-novo-evento {
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  #login-area {
+    max-width: 420px;
+    margin: 40px auto;
+  }
+
+  #login-erro {
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  #lista-eventos {
+    margin-top: 15px;
+  }
+
+  label {
+    font-size: 14px;
+    color: var(--text);
+  }
+
+  #seletorCores div,
+  #seletorCoresEd div {
+    transition: transform 0.12s ease;
+  }
+
+  #seletorCores div:hover,
+  #seletorCoresEd div:hover {
+    transform: scale(1.06);
+  }
+</style>
+
+</head>
+<body>
+  <header>
+    <h2>Painel Administrativo</h2>
+  </header>
+
+  <div id="container">
+    <div id="login-area">
+      <h3>Entrar</h3>
+      <input type="email" id="email" placeholder="Email do administrador">
+      <input type="password" id="senha" placeholder="Senha">
+      <button onclick="login()">Entrar</button>
+      <p id="login-erro" style="color:red"></p>
+    </div>
+
+    <div id="admin-area" style="display:none;">
+      <button onclick="carregarEventos()">Ver Eventos</button>
+      <button onclick="mostrarFormularioNovoEvento()">Novo Evento</button>
+      <button onclick="logout()">Sair</button>
+
+      <div id="lista-eventos"></div>
+      <div id="form-novo-evento" style="display:none;"></div>
+
+      <br>
+      <button id="limpaArquivo" onclick="limparArquivoAntigo()">Apagar eventos deletados com mais de 1 ano (LGPD)</button>
+    </div>
+  </div>
+  <a href="https://mikaelmuller.github.io/"><button>Retornar ao agendamento</button></a>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBDUWq5eqcmup1YazV7gSQTobbJdfSHEMo",
+      authDomain: "grota-funda.firebaseapp.com",
+      databaseURL: "https://grota-funda-default-rtdb.firebaseio.com",
+      projectId: "grota-funda",
+      storageBucket: "grota-funda.firebasestorage.app",
+      messagingSenderId: "796815371553",
+      appId: "1:796815371553:web:edf9923adaa0885e292260"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const coresDisponiveis = [
+      "#3182EB", "#E55353", "#48BB78",
+      "#ECC94B", "#9F7AEA", "#ED8936"
+    ];
+
+    function login() {
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+
+      firebase.auth().signInWithEmailAndPassword(email, senha)
+      .then(user => {
+        const uid = user.user.uid;
+        return db.ref("admins/" + uid).once("value");
+      })
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          document.getElementById("login-area").style.display = "none";
+          document.getElementById("admin-area").style.display = "block";
+          carregarEventos();
+        } else {
+          document.getElementById("login-erro").innerText = "Acesso negado: não é administrador.";
+          firebase.auth().signOut();
+        }
+      })
+      .catch(err => {
+        document.getElementById("login-erro").innerText = "Erro: " + err.message;
+      });
+    }
+
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        document.getElementById("admin-area").style.display = "none";
+        document.getElementById("login-area").style.display = "block";
+      });
+    }
+
+    function carregarEventos() {
+      const lista = document.getElementById("lista-eventos");
+      lista.innerHTML = "<h3>Eventos:</h3>";
+
+      firebase.database().ref("eventos").once("value").then(snap => {
+        let data = snap.val();
+        let list = Object.values(data || {});
+
+        list.sort((a, b) => (a.dia < b.dia ? 1 : -1));
+
+        list.forEach(ev => {
+          const div = document.createElement("div");
+          div.className = "evento";
+
+          div.innerHTML = `
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:18px;height:18px;border-radius:4px;background:${ev.cor};"></div>
+              <h4 style="margin:0;">${ev.nome}</h4>
+              ${(ev.dia < new Date().toISOString().split("T")[0]) ? '<span style="color:red;">(Já passou)</span>' : ""}
+            </div>
+            <p><b>Data:</b> ${ev.dia}</p>
+            <p><b>Texto:</b> ${ev.texto}</p>
+            <p><b>Tem formulário:</b> ${ev.formulario ? "Sim" : "Não"}</p>
+            <p><b>Inscrições: </b>${Object.keys(ev.participantes).length}</p>
+            <button onclick="editarEvento('${ev.id}')">Editar</button>
+            <button onclick="deletarEvento('${ev.id}')">Excluir</button>
+            <button onclick="verParticipantes('${ev.id}')" ${ev.formulario ? "" : "disabled"}>Ver Participantes</button>
+          `;
+
+          lista.appendChild(div);
+        });
+      });
+    }
+
+    function limparArquivoAntigo() {
+      if (!confirm("Isso apagará permanentemente todos os eventos arquivados com mais de 1 ano. Continuar?")) {
+        return;
+      }
+
+      const arquivoRef = db.ref("arquivo");
+
+      arquivoRef.once("value").then(snapshot => {
+        if (!snapshot.exists()) {
+          alert("Arquivo vazio.");
+          return;
+        }
+
+        let apagados = 0;
+        const updates = {};
+
+        snapshot.forEach(child => {
+          const idEvento = child.key;
+          const evento = child.val();
+
+          if (evento.dia) {
+            const dataEvento = Date.parse(evento.dia);
+
+            if (!isNaN(dataEvento) && dataEvento < (Date.now() - 31536000000)) {
+              updates[idEvento] = null; // marca para deletar
+              apagados++;
+            }
+          }
+        });
+
+        if (apagados === 0) {
+          alert("Nenhum evento com mais de 1 ano encontrado.");
+          return;
+        }
+
+        // Remove todos de uma vez (mais rápido e seguro)
+        arquivoRef.update(updates).then(() => {
+          alert(apagados + " evento(s) antigo(s) removido(s) do arquivo.");
+        });
+      });
+    }
+
+    let corSelecionada = null;
+
+    function mostrarFormularioNovoEvento() {
+
+      carregarEventos();
+
+      const f = document.getElementById("form-novo-evento");
+      f.style.display = "block";
+
+      f.innerHTML = `
+        <h3>Novo Evento</h3>
+        
+        <button onclick="eventoPadrao()">Evento Padrão</button>
+
+        <input id="nomeEvento" placeholder="Nome do evento">
+        <input id="dataEvento" type="date">
+        <input id="limiteEvento" type="number" placeholder="Limite de vagas">
+
+        <p><b>Cor do evento:</b></p>
+        <div id="seletorCores" style="display:flex;gap:10px;margin-bottom:10px;"></div>
+
+        <input type="checkbox" id="semFormulario" style="width:auto">
+        <label for="semFormulario">Evento sem formulário de inscrição</label>
+
+        <textarea id="textoEvento" placeholder="Descrição do evento" rows="15" cols="50"></textarea>
+
+        <button onclick="salvarNovoEvento()">Salvar</button>
+        <button onclick="esconderFormularioNovoEvento()">Cancelar</button>
+      `;
+      f.scrollIntoView();
+
+      corSelecionada = null;
+      const seletor = document.getElementById("seletorCores");
+
+      coresDisponiveis.forEach(c => {
+        const btn = document.createElement("div");
+        btn.style.width = "30px";
+        btn.style.height = "30px";
+        btn.style.borderRadius = "6px";
+        btn.style.cursor = "pointer";
+        btn.style.background = c;
+        btn.style.border = "3px solid transparent";
+
+        btn.onclick = () => {
+          corSelecionada = c;
+          [...seletor.children].forEach(b => b.style.border = "3px solid transparent");
+          btn.style.border = "3px solid #000";
+        };
+
+        seletor.appendChild(btn);
+      });
+    }
+
+    function esconderFormularioNovoEvento(){
+      document.getElementById("form-novo-evento").style.display = "none";
+    }
+
+    function eventoPadrao(){
+      document.getElementById("nomeEvento").value = "9h - Visita Guiada";
+      document.getElementById("limiteEvento").value = "30";
+      document.getElementById("textoEvento").value = "🌎 A SIMBiOSE é responsável pela cogestão do Parque Natural Municipal Grota Funda e estamos à disposição para agendar sua visita.\nHorário de Funcionamento das 8h às 17h\n\n* Limite máximo 50 pessoas\n* Não há restrição de idade\n* Visita gratuita\n* A visita é guiada por nossos monitores\n* Em caso de chuvas fortes, a visita será remarcada\n* Enviaremos um termo de visitação para a confirmação da visita\n\n🌳 O Parque possui sede com mini museu e banheiros. Temos 3 trilhas curtas para visitação, e área de lazer.";
+
+      corSelecionada = "#3182EB";
+    }
+
+    function salvarNovoEvento() {
+      const nome = document.getElementById("nomeEvento").value;
+      const dia = document.getElementById("dataEvento").value;
+      var limite = document.getElementById("limiteEvento").value;
+      const texto = document.getElementById("textoEvento").value;
+      const semForm = document.getElementById("semFormulario").checked;
+
+      if (!corSelecionada || nome == "" || dia == "" || texto == "") {
+        alert("Preencha nome, dia, texto e cor.");
+        return;
+      }
+
+      if (!semForm && limite == ""){
+        alert("Preencha o número de participantes");
+        return;
+      }
+
+      if(semForm){limite=0}
+
+      const id = dia.replaceAll("-", "") + Math.floor(Date.now() / 1000);
+
+      const novo = {
+        id, nome, dia,
+        limite: parseInt(limite),
+        texto,
+        cor: corSelecionada,
+        formulario: !semForm,
+        participantes: ""
+      };
+
+      db.ref("eventos/" + id).set(novo).then(() => {
+        alert("Evento criado!");
+        document.getElementById("form-novo-evento").style.display = "none";
+        carregarEventos();
+      });
+    }
+
+    function verParticipantes(idEvento) {
+      const lista = document.getElementById("lista-eventos");
+
+      db.ref("eventos/" + idEvento + "/participantes").once("value").then(snapshot => {
+        lista.innerHTML = `<h3>Participantes de ${idEvento}</h3>`;
+
+        snapshot.forEach(part => {
+          const p = part.val();
+          const div = document.createElement("div");
+          div.className = "participante";
+
+          div.innerHTML = `
+            <b>${p.nome}</b> (${p.idade} anos) - Alergias: ${p.alergias}
+            <button onclick="verDetalhes('${idEvento}','${part.key}')">Detalhes</button>
+            <button onclick="deletarParticipante('${idEvento}','${part.key}')">Excluir</button>
+          `;
+
+          lista.appendChild(div);
+        });
+
+        lista.innerHTML += `<button onclick="carregarEventos()">Voltar</button>`;
+      });
+    }
+
+    function verDetalhes(eventoId, participanteId) {
+      db.ref(`eventos/${eventoId}/participantes/${participanteId}`).once("value").then(snap => {
+        const p = snap.val();
+        alert(`
+          Nome: ${p.nome}
+          Idade: ${p.idade}
+          Telefone: ${p.telefone}
+          Email: ${p.enderecoEmail}
+          Alergias: ${p.alergias}
+          Emergência: ${p.emergencia}
+        `);
+      });
+    }
+
+    function deletarParticipante(eventoId, participanteId) {
+      if (confirm("Tem certeza que deseja excluir este participante?")) {
+        db.ref(`eventos/${eventoId}/participantes/${participanteId}`).remove().then(() => {
+          alert("Participante removido.");
+          verParticipantes(eventoId);
+        });
+      }
+    }
+
+    function deletarEvento(idEvento) {
+      if (confirm("Tem certeza que deseja mover este evento para o arquivo?")) {
+
+        const eventoRef = db.ref("eventos/" + idEvento);
+        const arquivoRef = db.ref("arquivo/" + idEvento);
+
+        // 1. Ler os dados do evento
+        eventoRef.once("value").then(snapshot => {
+          if (!snapshot.exists()) {
+            alert("O evento não existe.");
+            return;
+          }
+
+          const dadosEvento = snapshot.val();
+
+          // 2. Salvar no arquivo
+          arquivoRef.set(dadosEvento).then(() => {
+
+            // 3. Remover dos eventos ativos
+            return eventoRef.remove();
+
+          }).then(() => {
+            alert("Evento movido para o arquivo.");
+            carregarEventos(); // atualiza a lista
+          }).catch(error => {
+            alert("Erro: " + error.message);
+          });
+
+        });
+      }
+    }
+
+    function editarEvento(idEvento) {
+      esconderFormularioNovoEvento()
+
+      db.ref("eventos/" + idEvento).once("value").then(snapshot => {
+        const ev = snapshot.val();
+        const lista = document.getElementById("lista-eventos");
+
+        lista.innerHTML = `
+          <h3>Editar Evento</h3>
+
+          <input id="nomeEd" value="${ev.nome}">
+          <input id="dataEd" type="date" value="${ev.dia}">
+          <input id="limiteEd" type="number" value="${ev.limite}">
+
+          <p><b>Cor do evento:</b></p>
+          <div id="seletorCoresEd" style="display:flex;gap:10px;margin-bottom:10px;"></div>
+
+          <input type="checkbox" id="semFormularioEd" style="width:auto" ${ev.formulario ? "" : "checked"}>
+          <label for="semFormularioEd">Evento sem formulário de inscrição</label>
+
+          <textarea id="textoEd">${ev.texto}</textarea>
+
+          <button onclick="salvarEdicao('${idEvento}')">Salvar</button>
+          <button onclick="carregarEventos()">Cancelar</button>
+        `;
+
+        let corSelecionadaEd = ev.cor;
+        const seletorEd = document.getElementById("seletorCoresEd");
+
+        coresDisponiveis.forEach(c => {
+          const btn = document.createElement("div");
+          btn.style.width = "30px";
+          btn.style.height = "30px";
+          btn.style.borderRadius = "6px";
+          btn.style.cursor = "pointer";
+          btn.style.background = c;
+          btn.style.border = c === ev.cor ? "3px solid black" : "3px solid transparent";
+
+          btn.onclick = () => {
+            corSelecionadaEd = c;
+            [...seletorEd.children].forEach(b => b.style.border = "3px solid transparent");
+            btn.style.border = "3px solid black";
+          };
+
+          seletorEd.appendChild(btn);
+        });
+
+        window.salvarEdicao = function(idEvento) {
+          const nome = document.getElementById("nomeEd").value;
+          const dia = document.getElementById("dataEd").value;
+          var limite = document.getElementById("limiteEd").value;
+          const texto = document.getElementById("textoEd").value;
+          const semForm = document.getElementById("semFormularioEd").checked;
+
+          if (nome == "" || dia == "" || texto == "") {
+            alert("Preencha nome, dia, texto e cor.");
+            return;
+          }
+
+          if (!semForm && limite == ""){
+            alert("Preencha o número de participantes");
+            return;
+          }
+
+          if(semForm){limite=0}          
+
+          db.ref("eventos/" + idEvento).update({
+            nome, dia,
+            limite: parseInt(limite),
+            texto,
+            cor: corSelecionadaEd,
+            formulario: !semForm
+          }).then(() => {
+            alert("Evento atualizado.");
+            carregarEventos();
+          });
+        };
+      });
+    }
+  </script>
+</body>
+</html>

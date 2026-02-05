@@ -1,200 +1,289 @@
-body{
-  background-color: black;
+/* =========================
+   BASE / RESET
+========================= */
+* {
+  box-sizing: border-box;
 }
 
-p{
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  color: white;
+body {
+  margin: 0;
+  font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f3f6f4;
+  color: #1f2933;
+  line-height: 1.55;
+}
+
+/* =========================
+   CABEÇALHO
+========================= */
+#cabecalho {
+  background-color: #0e3b2e;
+  border-bottom: 4px solid #f0c94d;
 }
 
 #logo {
-  padding-top: 7%;
-  padding-left: 2.5%;
-  padding-right: 2.5%;
-  padding-bottom: 3%;
-  width: 90%;
+  display: block;
+  max-width: 700px;   /* aumenta no desktop */
+  width: 95%;
   margin: 0 auto;
+  padding: 2rem 0 1.5rem;
 }
 
-li{
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-li a{
-  color: #fbc32b;
-}
- 
+/* =========================
+   NAVEGAÇÃO
+========================= */
 ul.topnav {
-  list-style-type: none;
+  list-style: none;
+  display: flex;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  background-color: #333;
+  justify-content: center;
+  background-color: #0b2f25;
 }
-
-ul.topnav li {float: left;}
 
 ul.topnav li a {
   display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
+  padding: 0.9rem 1.4rem;
+  color: #e6f2ee;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+  text-decoration: 0;
 }
 
-ul.topnav li a:hover:not(.ativo) {background-color: #111;}
-
-ul.topnav li a.ativo {background-color: #0093d5;}
-
-ul.topnav li.direita {float: right;}
-
-#conteudo{
-  background-color: white;
-  padding: 2%;
-  border-radius: 5%;
-  margin-right: 5%;
-  margin-left: 5%;
+ul.topnav li a:hover {
+  background-color: rgba(255,255,255,0.08);
 }
 
-#calendar{
-  border-radius: 5%;
-  margin: 0 auto;
-  height: auto;
+ul.topnav li a.ativo {
+  background-color: #f0c94d;
+  color: #0b2f25;
+  font-weight: 600;
 }
 
-.fc-scroller {
-  overflow: auto !important;
+ul.topnav li.direita {
+  margin-left: auto;
+}
+
+/* =========================
+   CONTEÚDO PRINCIPAL
+========================= */
+#conteudo {
+  max-width: 1200px;
+  margin: 2.5rem auto;
+  background-color: #ffffff;
+  padding: 1.6rem;
+  border-radius: 10px;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+}
+
+#calendar {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* =========================
+   FULLCALENDAR
+========================= */
+.fc {
+  font-size: 0.95rem;
+}
+
+.fc-toolbar-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0e3b2e;
+  text-transform: capitalize;
+}
+
+.fc-button {
+  background-color: #0e3b2e !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 0.35rem 0.7rem !important;
+}
+
+.fc-button:hover {
+  background-color: #145c48 !important;
+}
+
+.fc-daygrid-day-number {
+  color: #374151;
 }
 
 .fc-event {
+  border-radius: 6px;
+  padding: 2px 4px;
+  border: none !important;
+  font-size: 0.8rem;
   cursor: pointer;
 }
 
-.fc-toolbar {
-  text-transform: capitalize;
-  font-family: Verdana, Geneva, Tahoma, sans-serif
+/* =========================
+   LOADING
+========================= */
+#carregandoGIF {
+  display: block;
+  margin: 3rem auto;
+  width: 120px;
 }
 
-#nome{
-  display: block;
+/* =========================
+   FORMULÁRIO / EVENTO
+========================= */
+#formularioDiv {
+  max-width: 900px;
+  margin: 0 auto 3rem;
+  background-color: #ffffff;
+  padding: 1.8rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
 }
 
-#enderecoEmail{
-  display: block;
+#eventoTexto {
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
 }
 
-#mensagem{
-  display: block;
+#vagas {
+  font-weight: 600;
+  color: #b45309;
+  margin-bottom: 1rem;
+}
+
+#formularioTexto {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0e3b2e;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+/* =========================
+   CAMPOS
+========================= */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+textarea {
+  width: 100%;
+  padding: 0.55rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.9rem;
+  margin-bottom: 0.9rem;
 }
 
 textarea {
   resize: none;
 }
 
-.fc-event-title {
-  white-space: normal;
-}
-
-#formularioDiv{
-  background-color: #333;
-  padding-right: 2%;
-  padding-left: 2%;
-  margin-bottom: 25px;
-  border-radius: 2%;
-}
-
-#vagas{
-  color: #FFC32A;
-}
-
-#formularioTexto{
-  color: white;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  text-align: center;
-}
-
-#riscosTexto, #lgpdTexto{
-  color: white;
-  font-size: small;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-#botao {
+label {
+  font-size: 0.78rem;
+  color: #374151;
   display: inline-block;
-  outline: none;
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 14px 24px;
+  margin-bottom: 0.8rem;
+}
+
+/* =========================
+   BOTÃO
+========================= */
+#botao {
+  background-color: #0e3b2e;
+  color: #ffffff;
   border: none;
-  transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s, -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
-  background:#0093d5;
-  color:white
+  border-radius: 8px;
+  padding: 0.7rem 1.8rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
 }
 
-#rodape{
-  background-color: #333;
-  padding: 1%;
-  border-radius: 1.5%;
+#botao:hover {
+  background-color: #145c48;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   AVISOS
+========================= */
+#avisoTexto {
+  margin-top: 0.8rem;
+  font-weight: 500;
+}
+
+/* =========================
+   RODAPÉ
+========================= */
+#rodape {
+  background-color: #0b2f25;
+  color: #e6f2ee;
   text-align: center;
+  padding: 2rem 1rem;
 }
 
-#contato{
-  color: white;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+#contato {
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
 }
 
-#contatoEmail{
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  color: #0093d5;
+#contatoEmail {
+  display: block;
+  color: #7dd3fc;
+  margin-bottom: 1rem;
 }
 
-#logoSimbiose{
-  width: 30%;
-  margin-left: 35%;
-  margin-right: 35%;
+#logoSimbiose {
+  width: 150px;
+  display: block;
+  margin: 1rem auto;
 }
 
-#admTexto{
-  text-align: right;
-  margin: 0;
+#admTexto {
+  font-size: 0.75rem;
+  color: #9fbfb4;
 }
 
-@media screen and (max-width: 600px) {
-  ul.topnav li.direita, 
-  ul.topnav li {float: none;}
-  #logoSimbiose{
-  width: 40%;
-  margin-left: 30%;
-  margin-right: 30%;
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 700px) {
+  ul.topnav {
+    flex-direction: column;
   }
+
+  ul.topnav li.direita {
+    margin-left: 0;
+  }
+
+  #conteudo {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  #formularioDiv {
+    margin: 0 1rem 2rem;
+    padding: 1.2rem;
+  }
+}
+
+@media (min-width: 1100px) {
   #logo {
-  padding-top: 3%;
-  padding-left: 0.5%;
-  padding-right: 0.5%;
-  padding-bottom: 1%;
-  width: 99%;
-  margin: 0 auto;
+    max-width: 820px;
   }
-  #conteudo {margin-left: 0.5%; margin-right: 0.5%;}
 }
 
-@media screen and (min-width: 1000px) {
-  #conteudo {margin-left: 20%; margin-right: 20%;}
-  #logo {
-  padding-top: 7%;
-  padding-left: 20%;
-  padding-right: 20%;
-  padding-bottom: 3%;
-  width: 60%;
-  margin: 0 auto;
-  }
-  #logoSimbiose{
-  width: 16%;
-  margin-left: 42%;
-  margin-right: 42%;
+/* Esconde o formulário enquanto não houver conteúdo */
+#formularioDiv {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
+/* Mostra quando o texto do evento for preenchido */
+#formularioDiv:has(#eventoTexto:not(:empty)) {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
